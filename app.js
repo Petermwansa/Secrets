@@ -75,7 +75,5 @@ app.post("/login", function(req, res){
 
 
 app.listen(3000, function(){
-
-console.log(process.env); // remove this after you've confirmed it working
   console.log("Server has started on port 3000");
 });
