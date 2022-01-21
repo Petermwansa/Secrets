@@ -105,7 +105,7 @@ app.post("/login", function(req, res) {
         res.redirect("/secrets");
       })
     }
-  })
+  });
 });
 
 app.listen(3000, function() {
