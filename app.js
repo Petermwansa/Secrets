@@ -1,5 +1,5 @@
 //jshint esversion:6
-
+require('dotenv').config();   // no need to set the const for it will be running throughout
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const encrypt = require("mongoose-encryption");
 
 const app = express();
+console.log(process.env.API_KEY);
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -20,11 +21,8 @@ const userSchema = new mongoose.Schema ({
   password: String
 });
 
-//we define a secret that we will use for our encyption      encryptedFields: ['age']
-const secret = "Thisismyfavouriteplace";
-
-
-userSchema.plugin(encrypt, {secret: secret, encryptedFields: ["password"] });
+//we tap into the value for secret that was defined in the secret var in the .env
+userSchema.plugin(encrypt, {secret: process.env.SECRET, encryptedFields: ["password"]});
 
 
 const User  = new mongoose.model("User", userSchema);
@@ -76,9 +74,8 @@ app.post("/login", function(req, res){
 
 
 
-
-
-
 app.listen(3000, function(){
+
+console.log(process.env); // remove this after you've confirmed it working
   console.log("Server has started on port 3000");
 });
