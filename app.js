@@ -9,6 +9,7 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const app = express();
+const router = express.Router();
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -51,7 +52,7 @@ app.get("/", function(req, res) {
   res.render("home");
 });
 
-app.get("/login", function(req, res) {
+app.get("/login", function(req, res, next) {
   res.render("login");
 });
 
@@ -71,6 +72,11 @@ app.get("/secrets", function(req, res) {
 app.get("/logout", function(req, res){
   req.logout();
   res.redirect("/");
+});
+
+router.post('/logout', function(req, res, next) {
+  req.logout();
+  res.redirect('/');
 });
 
 //this will be targeted by the register route as the user submits the info from the form
@@ -103,7 +109,7 @@ app.post("/login", function(req, res) {
     } else {
       passport.authenticate("local")(req, res, function(){
         res.redirect("/secrets");
-      })
+      });
     }
   });
 });
